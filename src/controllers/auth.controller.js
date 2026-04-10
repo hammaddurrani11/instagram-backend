@@ -29,7 +29,8 @@ async function registerUser(req, res) {
         return res.status(201).json({
             message: "User created successfully",
             user: newUser,
-            token
+            token,
+            success: true
         });
     }
     catch (error) {
@@ -69,7 +70,8 @@ async function loginUser(req, res) {
         return res.status(200).json({
             message: "User logged in successfully",
             user,
-            token
+            token,
+            success: true
         })
     }
     catch (error) {
