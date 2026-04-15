@@ -11,11 +11,13 @@ app.use(cors({
 
 const authRoutes = require('./routes/auth.routes');
 const postRoutes = require('./routes/post.routes');
+const userRoutes = require('./routes/user.routes');
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;

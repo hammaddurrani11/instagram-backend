@@ -23,7 +23,8 @@ async function createPost(req, res) {
 
         return res.status(201).json({
             message: "Post created successfully",
-            postCreated
+            postCreated,
+            success: true
         })
     }
     catch (error) {
@@ -34,6 +35,25 @@ async function createPost(req, res) {
     }
 }
 
+async function getAllPosts(req, res) {
+    try {
+        const posts = await postModel.find();
+
+        return res.status(200).json({
+            message: "Posts fetched successfully",
+            posts,
+            success: true
+        })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error"
+        })
+    }
+}
+
 module.exports = {
-    createPost
+    createPost,
+    getAllPosts
 }
