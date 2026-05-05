@@ -13,7 +13,7 @@ async function createPost(req, res) {
             })
         }
 
-        const fileUploadResult = await uploadFile(picture.buffer, uuid());
+        const fileUploadResult = await uploadFile(picture.buffer, uuid(), req.user.id);
 
         const postCreated = await postModel.create({
             caption,

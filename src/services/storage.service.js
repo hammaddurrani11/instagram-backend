@@ -6,11 +6,11 @@ const imagekit = new ImageKit({
     urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
 
-async function uploadFile(buffer, fileName) {
+async function uploadFile(buffer, fileName, userId) {
     return imagekit.files.upload({
         file: buffer.toString('base64'),
         fileName,
-        folder: "/Instagram",
+        folder: `/Instagram/user/${userId}`,
     });
 }
 
