@@ -25,23 +25,51 @@ async function editUser(req, res) {
     try {
         const { username, bio } = req.body;
         const { id } = req.params;
-        const profilePic = req.file;
+        const userId = req.user.id;
 
-        const uploadedFile = await uploadFile(profilePic.buffer, uuid(), req.user.id);
+        const profilePicture = req.file;
 
-        const updatedUser = await userModel.findByIdAndUpdate(id, {
-            username,
-            bio,
-            profilePic: uploadedFile.url
-        }, { new: true });
+        if (id != userId) {
+            return res.status(403).json({
+                message: "You are not authorized to perform this action",
+                success: false
+            })
+        }
+
+        const updateData = {};
+
+        if (username) {
+            updateData.username = username;
+        }
+
+        if (bio) {
+            updateData.bio = bio;
+        }
+
+        if (profilePicture) {
+            const uploadedFile = await uploadFile(
+                profilePicture.buffer,
+                uuid(),
+                userId
+            );
+
+            updateData.profilePicture = uploadedFile.url;
+        }
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true }
+        );
 
         return res.status(200).json({
             message: "User updated successfully",
-            updatedUser,
+            user: updatedUser,
             success: true
         })
     }
     catch (error) {
+        console.error(error);
         res.status(500).json({
             message: "Internal Server Error",
             success: false
