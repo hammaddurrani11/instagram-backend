@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 async function registerUser(req, res) {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, fullName } = req.body;
 
         const user = await userModel.findOne({ email });
         if (user) {
@@ -18,6 +18,7 @@ async function registerUser(req, res) {
 
         const newUser = await userModel.create({
             username,
+            fullName,
             email,
             password: hashedPassword
         });
@@ -82,7 +83,24 @@ async function loginUser(req, res) {
     }
 }
 
+async function logoutUser(req, res) {
+    try {
+        res.clearCookie("token");
+        return res.status(200).json({
+            message: "User logged out successfully",
+            success: true
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 }

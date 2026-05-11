@@ -77,7 +77,25 @@ async function editUser(req, res) {
     }
 }
 
+async function getCurrentUser(req, res) {
+    try {
+        return res.status(200).json({
+            message: "User fetched successfully",
+            user: req.user,
+            success: true
+        })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal Server Error",
+            success: false
+        })
+    }
+}
+
 module.exports = {
     getUserById,
-    editUser
+    editUser,
+    getCurrentUser
 }

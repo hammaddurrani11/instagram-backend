@@ -14,4 +14,7 @@ router.get('/:id', authMiddleware.userAuthMiddleware, userController.getUserById
 // Edit User
 router.patch('/:id', authMiddleware.userAuthMiddleware, upload.single('profilePic'), userController.editUser);
 
+// Get Current User
+router.get('/', authMiddleware.userAuthMiddleware, userController.getCurrentUser);
+
 module.exports = router;
