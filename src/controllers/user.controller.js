@@ -23,7 +23,7 @@ async function getUserById(req, res) {
 
 async function editUser(req, res) {
     try {
-        const { username, bio } = req.body;
+        const { username, bio, fullName, phoneNumber, gender } = req.body;
         const { id } = req.params;
         const userId = req.user.id;
 
@@ -44,6 +44,18 @@ async function editUser(req, res) {
 
         if (bio) {
             updateData.bio = bio;
+        }
+        
+        if (fullName) {
+            updateData.fullName = fullName;
+        }
+        
+        if (phoneNumber) {
+            updateData.phoneNumber = phoneNumber;
+        }
+        
+        if (gender) {
+            updateData.gender = gender;
         }
 
         if (profilePicture) {

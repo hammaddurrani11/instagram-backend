@@ -12,7 +12,12 @@ const postSchema = new mongoose.Schema({
     caption: {
         type: String,
         required: true
+    },
+    imageFileId: {
+        type: String
     }
+}, {
+    timestamps: true
 })
 
 const post = mongoose.model("post", postSchema);

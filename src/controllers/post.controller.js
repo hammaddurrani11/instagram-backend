@@ -18,6 +18,7 @@ async function createPost(req, res) {
         const postCreated = await postModel.create({
             caption,
             picture: fileUploadResult.url,
+            imageFileId: fileUploadResult.fileId,
             user: req.user.id
         })
 
@@ -107,6 +108,14 @@ async function deletePost(req, res) {
             return res.status(401).json({
                 message: "Unauthorized"
             })
+        }
+
+        if (post.imageFileId) {
+            try {
+                await imagekit.deleteFile(post.imageFileId);
+            } catch (err) {
+                console.log("Image delete failed");
+            }
         }
 
         await post.deleteOne();
