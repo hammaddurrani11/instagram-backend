@@ -38,7 +38,7 @@ async function createPost(req, res) {
 
 async function getAllPosts(req, res) {
     try {
-        const posts = await postModel.find();
+        const posts = await postModel.find().sort({createdAt: -1});
 
         return res.status(200).json({
             message: "Posts fetched successfully",
@@ -152,10 +152,30 @@ async function getUserPosts(req, res) {
     }
 }
 
+async function getPostById(req, res) {
+    try {
+        const postId = req.params.id;
+        const post = await postModel.findById(postId);
+
+        return res.status(200).json({
+            message: "Post fetched successfully",
+            post,
+            success: true
+        })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error"
+        })
+    }
+}
+
 module.exports = {
     createPost,
     getAllPosts,
     editPost,
     deletePost,
-    getUserPosts
+    getUserPosts,
+    getPostById
 }

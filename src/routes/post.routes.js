@@ -24,4 +24,7 @@ router.delete('/:id', authMiddleware.userAuthMiddleware, postController.deletePo
 // Get User Posts
 router.get('/user/:id', authMiddleware.userAuthMiddleware, postController.getUserPosts);
 
+// Get Post By Id
+router.get('/:id', authMiddleware.userAuthMiddleware, postController.getPostById);
+
 module.exports = router;
