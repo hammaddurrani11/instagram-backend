@@ -16,14 +16,12 @@ const postSchema = new mongoose.Schema({
     imageFileId: {
         type: String
     },
-    likes: {
-        user: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'user'
-            }
-        ]
-    },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+        }
+    ],
     comments: [
         {
             userId: {

@@ -190,9 +190,9 @@ async function likePost(req, res) {
             })
         }
 
-        if (post.likes.user.includes(userId)) {
+        if (post.likes.includes(userId)) {
 
-            post.likes.user.pull(userId);
+            post.likes.pull(userId);
 
             await post.save();
 
@@ -203,7 +203,7 @@ async function likePost(req, res) {
             })
         }
 
-        post.likes.user.push(userId);
+        post.likes.push(userId);
         await post.save();
 
         return res.status(200).json({
