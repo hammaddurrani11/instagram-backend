@@ -38,7 +38,7 @@ async function createPost(req, res) {
 
 async function getAllPosts(req, res) {
     try {
-        const posts = await postModel.find().sort({createdAt: -1});
+        const posts = await postModel.find().sort({ createdAt: -1 });
 
         return res.status(200).json({
             message: "Posts fetched successfully",
@@ -171,11 +171,61 @@ async function getPostById(req, res) {
     }
 }
 
+async function likePost(req, res) {
+    try {
+        const postId = req.params.id;
+        const userId = req.user.id;
+
+        if (!postId || !userId) {
+            return res.status(400).json({
+                message: "Post ID and User ID are required"
+            })
+        }
+
+        const post = await postModel.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            })
+        }
+
+        if (post.likes.user.includes(userId)) {
+            
+            post.likes.user.pull(userId);
+
+            await post.save();
+
+            return res.status(200).json({
+                message: "Post unliked successfully",
+                post,
+                success: true
+            })
+        }
+
+        post.likes.user.push(userId);
+        await post.save();
+
+        return res.status(200).json({
+            message: "Post liked successfully",
+            post,
+            success: true
+        })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Internal server error"
+        })
+    }
+}
+
 module.exports = {
     createPost,
     getAllPosts,
     editPost,
     deletePost,
     getUserPosts,
-    getPostById
+    getPostById,
+    likePost
 }

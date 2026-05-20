@@ -27,4 +27,7 @@ router.get('/user/:id', authMiddleware.userAuthMiddleware, postController.getUse
 // Get Post By Id
 router.get('/:id', authMiddleware.userAuthMiddleware, postController.getPostById);
 
+// Like Post
+router.post('/:id/like', authMiddleware.userAuthMiddleware, postController.likePost);
+
 module.exports = router;
