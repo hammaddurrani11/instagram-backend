@@ -191,7 +191,7 @@ async function likePost(req, res) {
         }
 
         if (post.likes.user.includes(userId)) {
-            
+
             post.likes.user.pull(userId);
 
             await post.save();
@@ -220,6 +220,39 @@ async function likePost(req, res) {
     }
 }
 
+async function commentPost(req, res) {
+    const postId = req.params.id;
+    const userId = req.user.id;
+    const comment = req.body.comment;
+
+    if (!postId || !userId) {
+        return res.status(400).json({
+            message: "Post ID and User ID are required"
+        })
+    }
+
+    const post = await postModel.findById(postId);
+
+    if (!post) {
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+
+    post.comments.push({
+        userId,
+        comment
+    })
+
+    await post.save();
+
+    return res.status(200).json({
+        message: "Comment added successfully",
+        post,
+        success: true
+    })
+}
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -227,5 +260,6 @@ module.exports = {
     deletePost,
     getUserPosts,
     getPostById,
-    likePost
+    likePost,
+    commentPost
 }
